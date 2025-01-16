@@ -49,18 +49,18 @@ def lambda_handler(event, context):
             body = json.loads(event['body'])
             print('body is')
             print(body)
-            customerId = body.get('customerId')
+            id = body.get('id')
             name = body.get('name')
             email = body.get('email')
-            if not customerId or not name or not email:
+            if not id or not name or not email:
                 return {
                     "statusCode": 400,
                     "headers": responseHeader,
-                    "body": json.dumps({"error": "CustomerID, Name,Email Required."})
+                    "body": json.dumps({"error": "CustomerId, Name,Email Required."})
                 }
 
             # Insert item into DynamoDB
-            table.put_item(Item={"CustomerId": customerId, "Name": name, "Email": email})
+            table.put_item(Item={"CustomerId": id, "Name": name, "Email": email})
             return {
                 "statusCode": 200,
                 "headers": responseHeader,
