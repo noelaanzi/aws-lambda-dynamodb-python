@@ -2,13 +2,11 @@ import json
 import boto3
 from botocore.exceptions import ClientError
 
-
 dynamodb = boto3.resource("dynamodb", region_name='ap-northeast-1')
 table = dynamodb.Table('customer')
 
 
 def lambda_handler(event, context):
-    
     try:
         http_method = event.get("httpMethod")
         resource = event.get("resource")
@@ -33,6 +31,7 @@ def lambda_handler(event, context):
             responseBody = [
                 {'CustomerId': dataSet['CustomerId'], 'Name': dataSet['Name'], 'Email': dataSet['Email']}]
 
+            print('Data Retrieved...')
             print(responseBody)
 
             return {
@@ -40,12 +39,12 @@ def lambda_handler(event, context):
                 "headers": responseHeader,
                 "body": json.dumps({"message": responseBody})
             }
-            
+
         # Process POST method
         elif http_method == 'POST':
             # Parse request body
             body = json.loads(event['body'])
-            print('body is')
+            print('Request Payload... ')
             print(body)
             id = body.get('id')
             name = body.get('name')
