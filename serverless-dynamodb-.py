@@ -8,19 +8,19 @@ table = dynamodb.Table('customer')
 
 
 def lambda_handler(event, context):
-    # Extract query parameters from the event object
-    # Get HTTP method and resource path
+    
     try:
         http_method = event.get("httpMethod")
         resource = event.get("resource")
+        # Add CORS in response header
         responseHeader = {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",  # Replace with your domain for production
             "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
         }
 
-        # Handle different routes
         responseBody = {}
+        # Process GET method
         if http_method == "GET":
             # Example: Fetch list of users
             customerId = event.get("queryStringParameters", {}).get(
@@ -33,17 +33,15 @@ def lambda_handler(event, context):
             responseBody = [
                 {'CustomerId': dataSet['CustomerId'], 'Name': dataSet['Name'], 'Email': dataSet['Email']}]
 
-            # Process the query parameter
-            # response_message = f"Received query parameter: {query_param}"
             print(responseBody)
-            # Return a response with CORS headers
 
             return {
                 "statusCode": 200,
                 "headers": responseHeader,
                 "body": json.dumps({"message": responseBody})
             }
-
+            
+        # Process POST method
         elif http_method == 'POST':
             # Parse request body
             body = json.loads(event['body'])
@@ -70,7 +68,7 @@ def lambda_handler(event, context):
             return {
                 "statusCode": 405,
                 "headers": responseHeader,
-                "body": json.dumps({"error": "Method not allowed"})
+                "body": json.dumps({"error": "Invalid Request Method "})
             }
 
     except ClientError as e:
