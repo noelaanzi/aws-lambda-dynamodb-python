@@ -20,7 +20,7 @@ def lambda_handler(event, context):
         responseBody = {}
         # Process GET method
         if http_method == "GET":
-            # Example: Fetch list of users
+            # Read query parameter
             customerId = event.get("queryStringParameters", {}).get(
                 "CustomerId", "No Value"
             )
