@@ -9,7 +9,6 @@ table = dynamodb.Table('customer')
 def lambda_handler(event, context):
     try:
         http_method = event.get("httpMethod")
-        resource = event.get("resource")
         # Add CORS in response header
         responseHeader = {
             "Content-Type": "application/json",
